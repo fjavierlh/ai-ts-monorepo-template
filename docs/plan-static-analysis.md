@@ -59,7 +59,7 @@ El alcance exacto de cada hook se decidirá al implementar las fases, midiendo e
 
 ### Fase 5 — Consistencia de dependencias
 
-- Evaluar syncpack para mantener consistentes las versiones de dependencias compartidas entre paquetes.
+- Incorporar Syncpack para comprobar la consistencia de versiones entre paquetes, integrado en `pnpm check`.
 
 ### Fase 6 — Detección de secretos
 

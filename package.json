@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint .",
     "typecheck": "pnpm -r run typecheck",
-    "check": "pnpm lint && pnpm typecheck && pnpm depcruise && pnpm check:unused",
+    "check": "pnpm lint && pnpm typecheck && pnpm depcruise && pnpm check:unused && pnpm check:dependencies",
+    "check:dependencies": "syncpack lint",
     "check:unused": "knip",
     "depcruise": "depcruise --config .dependency-cruiser.mjs apps packages",
     "prepare": "husky"
@@ -38,6 +39,7 @@
     "knip": "^6.41.0",
     "lint-staged": "^17.6.0",
     "prettier": "^3.9.10",
+    "syncpack": "^15.3.3",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.71.1"
   },
