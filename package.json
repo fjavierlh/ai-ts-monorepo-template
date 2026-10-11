@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "description": "",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint .",
     "typecheck": "pnpm -r run typecheck",
-    "check": "pnpm lint && pnpm typecheck && pnpm depcruise",
+    "check": "pnpm lint && pnpm typecheck && pnpm depcruise && pnpm check:unused",
+    "check:unused": "knip",
     "depcruise": "depcruise --config .dependency-cruiser.mjs apps packages",
     "prepare": "husky"
   },
@@ -35,6 +35,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-sonarjs": "^4.2.2",
     "husky": "^9.1.7",
+    "knip": "^6.41.0",
     "lint-staged": "^17.6.0",
     "prettier": "^3.9.10",
     "typescript": "^6.0.3",
