@@ -23,6 +23,11 @@
   "packageManager": "pnpm@12.8.1",
   "type": "module",
   "devDependencies": {
-    "husky": "^9.1.7"
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.10"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts,json,jsonc,md,mdx,yaml,yml,css,scss,html}": "prettier --write"
   }
 }
