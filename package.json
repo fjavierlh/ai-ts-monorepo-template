@@ -9,6 +9,7 @@
     "typecheck": "pnpm -r run typecheck",
     "check": "pnpm lint && pnpm typecheck && pnpm depcruise && pnpm check:unused && pnpm check:dependencies",
     "check:dependencies": "syncpack lint",
+    "check:secrets": "sh scripts/check-secrets.sh",
     "check:unused": "knip",
     "depcruise": "depcruise --config .dependency-cruiser.mjs apps packages",
     "prepare": "husky"

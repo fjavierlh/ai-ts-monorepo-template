@@ -63,7 +63,7 @@ El alcance exacto de cada hook se decidirá al implementar las fases, midiendo e
 
 ### Fase 6 — Detección de secretos
 
-- Incorporar Gitleaks para analizar cambios staged en el hook de commit, cuidando el coste y evitando escanear innecesariamente todo el historial.
+- Incorporar Gitleaks mediante la imagen oficial de Docker, para analizar cambios staged en el hook de commit sin escanear innecesariamente el historial. Si Docker no está disponible, avisar y omitir el análisis.
 
 ### Fase 7 — Contrato OpenAPI en `commons`
 
