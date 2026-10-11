@@ -222,6 +222,15 @@ importers:
       prettier:
         specifier: ^3.9.10
         version: 3.9.10
+      typescript:
+        specifier: ^7.0.2
+        version: 7.0.2
+
+  apps/backend: {}
+
+  apps/frontend: {}
+
+  packages/commons: {}
 
 packages:
   "@babel/code-frame@7.29.7":
