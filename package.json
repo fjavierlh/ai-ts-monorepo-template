@@ -6,7 +6,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint .",
     "typecheck": "pnpm -r run typecheck",
+    "check": "pnpm lint && pnpm typecheck",
     "prepare": "husky"
   },
   "keywords": [],
@@ -27,12 +29,19 @@
   "devDependencies": {
     "@commitlint/cli": "^21.2.3",
     "@commitlint/config-conventional": "^21.2.3",
+    "eslint": "^10.12.0",
+    "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",
     "prettier": "^3.9.10",
-    "typescript": "^7.0.2"
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.71.1"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts,json,jsonc,md,mdx,yaml,yml,css,scss,html}": "prettier --write"
+    "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,jsonc,md,mdx,yaml,yml,css,scss,html}": "prettier --write"
   }
 }

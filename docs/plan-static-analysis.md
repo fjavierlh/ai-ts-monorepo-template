@@ -1,0 +1,120 @@
+# Plan: análisis estático del monorepo
+
+## Objetivo
+
+Incorporar análisis estático que ayude a las personas y a los agentes a detectar y corregir problemas, con feedback rápido en local y análisis más profundos en CI. Las herramientas se añadirán gradualmente, en sesiones separadas, y cada fase deberá dejar el repositorio en un estado funcional.
+
+## Decisiones
+
+- El repositorio será un template reutilizable; las herramientas que requieran servicios o infraestructura serán opcionales y no bloquearán el flujo por defecto.
+- El monorepo tendrá `apps/backend`, `apps/frontend` y `packages/commons`.
+- Backend y frontend usarán TypeScript. El framework de backend y el framework/metaframework de frontend aún están por decidir.
+- Mantener TypeScript en `6.x` hasta que `typescript-eslint` sea compatible con la API de TypeScript 7; evaluar la actualización por separado.
+- Usar la versión soportada actual de ESLint (`10.x`); incorporar plugins específicos del frontend solo cuando declaren compatibilidad con la major adoptada.
+- `packages/commons` contendrá `openapi.yaml` y los tipos/DTOs compartidos. Se incluirán generación de tipos desde OpenAPI y una comprobación de que el código generado no está desactualizado.
+- Para las reglas de Sonar se usará `eslint-plugin-sonarjs` localmente; SonarCloud será opcional en CI.
+- Las herramientas se incorporarán de una en una en sesiones posteriores, no todas juntas.
+
+## Capas de ejecución
+
+| Capa             | Alcance previsto                                                         | Objetivo                                      |
+| ---------------- | ------------------------------------------------------------------------ | --------------------------------------------- |
+| `pre-commit`     | Archivos staged, autofix de formato/lint y detección de secretos         | Feedback rápido y bloqueo de errores claros   |
+| `pre-push`       | Comprobaciones del proyecto, como tipos, dependencias y arquitectura     | Detectar problemas que necesitan más contexto |
+| CI de PR         | SAST, validación de contratos y análisis opcionales de calidad/seguridad | Análisis profundo y reportes compartibles     |
+| Nightly u opt-in | Análisis costosos, como mutation testing                                 | Evitar ralentizar el trabajo diario           |
+
+El alcance exacto de cada hook se decidirá al implementar las fases, midiendo el tiempo de ejecución. No se ejecutará un análisis de proyecto completo en cada commit si hace lento el ciclo de trabajo.
+
+## Fases propuestas
+
+### Fase 0 — Fundaciones del monorepo
+
+- Crear el workspace de pnpm para `apps/*` y `packages/*` y la estructura inicial de módulos.
+- Definir configuración TypeScript compartida y la estrategia de compilación/typecheck por paquete.
+- Incorporar Turborepo para orquestación y cache de tareas, si encaja con la estructura final.
+- Añadir ESLint 10 con flat config y `typescript-eslint`, junto con `eslint-config-prettier`.
+- Definir scripts comunes (`lint`, `typecheck`, `check`) y configurar `lint-staged` para ejecutar autofix sobre archivos staged.
+- Documentar los comandos y convenciones para agentes en `AGENTS.md`.
+
+### Fase 1 — Typecheck
+
+- Ejecutar `tsc --noEmit` para los paquetes pertinentes.
+- Integrarlo en los scripts del workspace y cachearlo mediante el runner si se adopta Turborepo.
+
+### Fase 2 — Reglas Sonar locales
+
+- Añadir `eslint-plugin-sonarjs` a ESLint.
+- Mantener estas reglas disponibles en local sin requerir servidor externo.
+
+### Fase 3 — Fronteras y ciclos de dependencias
+
+- Configurar dependency-cruiser para comprobar las dependencias entre módulos y detectar ciclos.
+- Reglas iniciales: `commons` no depende de código interno de las apps; backend y frontend pueden depender de `commons`, pero no entre sí.
+- Adaptar los patrones de imports a la estructura real cuando se creen los paquetes.
+
+### Fase 4 — Código y dependencias sin uso
+
+- Incorporar Knip para detectar archivos, exports y dependencias no utilizados, configurado para el workspace.
+
+### Fase 5 — Consistencia de dependencias
+
+- Evaluar syncpack para mantener consistentes las versiones de dependencias compartidas entre paquetes.
+
+### Fase 6 — Detección de secretos
+
+- Incorporar Gitleaks para analizar cambios staged en el hook de commit, cuidando el coste y evitando escanear innecesariamente todo el historial.
+
+### Fase 7 — Contrato OpenAPI en `commons`
+
+- Usar Spectral para lint de `openapi.yaml`.
+- Usar oasdiff para detectar cambios incompatibles en CI, comparando con la versión base apropiada.
+- Generar los tipos compartidos desde la especificación (evaluar `openapi-typescript` u Orval según las necesidades de consumo).
+- Añadir una comprobación que falle si el resultado generado no coincide con el código versionado.
+
+### Fase 8 — Análisis específico del frontend
+
+Tras elegir React y, en su caso, un metaframework:
+
+- Evaluar `eslint-plugin-react`, `eslint-plugin-react-hooks` y `eslint-plugin-jsx-a11y` según las versiones y convenciones del stack elegido; incorporarlos solo si son compatibles con la major de ESLint adoptada.
+- Evaluar `size-limit` para controlar el tamaño de los bundles.
+- Añadir reglas específicas de límites entre código de servidor y cliente si se adopta TanStack Start u otro stack SSR.
+
+### Fase 9 — Análisis específico del backend
+
+- Tras elegir framework, evaluar sus plugins y reglas específicas.
+- Mantener aplicables las reglas genéricas de TypeScript mientras el framework siga pendiente.
+
+### Fase 10 — SAST con Semgrep en CI
+
+- Ejecutar Semgrep en CI con reglas adecuadas al stack y reportes SARIF.
+- Publicar el reporte como artefacto y habilitar su integración con Code Scanning si la plataforma lo permite.
+
+### Fase 11 — SonarCloud opcional
+
+- Documentar y preparar la integración con SonarCloud y cobertura como job opt-in, sin requerir credenciales ni servicio en el uso básico del template.
+
+### Fase 12 — Análisis opcional de supply chain e IaC
+
+- Evaluar `osv-scanner` o `pnpm audit` para vulnerabilidades de dependencias.
+- Evaluar Trivy para dependencias, IaC, secretos o contenedores, según lo que incorpore el repositorio.
+- Evaluar CodeQL si la plataforma y el tipo de repositorio lo justifican.
+- Mantener estas integraciones opt-in cuando dependan de plataforma, credenciales o infraestructura.
+
+### Fase 13 — Salida orientada a agentes
+
+- Consolidar comandos como `pnpm check` para feedback local rápido y `pnpm check:ci` para análisis profundo.
+- Mantener códigos de salida correctos y reportes en formatos legibles por herramientas (JSON/SARIF cuando estén disponibles).
+- Documentar en `AGENTS.md` qué comando ejecutar y cómo interpretar los hallazgos.
+- Considerar un resumen JSON estable y un servidor MCP solo si el uso real demuestra que aportan valor.
+
+### Fase 14 — Herramientas opcionales de mayor coste
+
+- Evaluar jscpd para duplicación, Stryker para mutation testing, type-coverage para cobertura de tipos y API Extractor para controlar la superficie pública de `commons`.
+- Ejecutarlas solo si las necesidades del proyecto lo justifican, posiblemente en CI nocturna.
+
+## Orden y dependencias
+
+Orden sugerido: **Fase 0 → Fases 1–6 → Fases 7–9 → Fases 10–12 → Fase 13 → Fase 14**.
+
+Las fases 8 y 9 quedan pendientes de elegir los frameworks. Las fases que introduzcan infraestructura o configuración específica de plataforma se implementarán como opcionales. El plan se revisará conforme se concreten el layout, las aplicaciones y sus necesidades reales.
