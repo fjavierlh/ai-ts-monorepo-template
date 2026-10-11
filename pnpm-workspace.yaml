@@ -1,3 +1,8 @@
 packages:
   - "apps/*"
   - "packages/*"
+
+# Transitive dependency of @stoplight/spectral-cli; its postinstall sends
+# installation analytics and is not needed to run Spectral.
+allowBuilds:
+  "@scarf/scarf": false

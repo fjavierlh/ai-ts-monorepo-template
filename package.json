@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint .",
     "typecheck": "pnpm -r run typecheck",
-    "check": "pnpm lint && pnpm typecheck && pnpm depcruise && pnpm check:unused && pnpm check:dependencies",
+    "check": "pnpm lint && pnpm typecheck && pnpm depcruise && pnpm check:unused && pnpm check:dependencies && pnpm check:api",
+    "check:api": "spectral lint --fail-severity error packages/commons/openapi.yaml",
     "check:dependencies": "syncpack lint",
     "check:secrets": "sh scripts/check-secrets.sh",
     "check:unused": "knip",
@@ -32,6 +33,7 @@
   "devDependencies": {
     "@commitlint/cli": "^21.2.3",
     "@commitlint/config-conventional": "^21.2.3",
+    "@stoplight/spectral-cli": "^6.17.0",
     "dependency-cruiser": "^18.5.0",
     "eslint": "^10.12.0",
     "eslint-config-prettier": "^10.1.8",

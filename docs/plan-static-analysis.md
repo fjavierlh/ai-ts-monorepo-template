@@ -67,10 +67,18 @@ El alcance exacto de cada hook se decidirá al implementar las fases, midiendo e
 
 ### Fase 7 — Contrato OpenAPI en `commons`
 
-- Usar Spectral para lint de `openapi.yaml`.
-- Usar oasdiff para detectar cambios incompatibles en CI, comparando con la versión base apropiada.
-- Generar los tipos compartidos desde la especificación (evaluar `openapi-typescript` u Orval según las necesidades de consumo).
-- Añadir una comprobación que falle si el resultado generado no coincide con el código versionado.
+- **7.1 — Lint de la especificación (completado)**
+  - Añadir `packages/commons/openapi.yaml` con OpenAPI `3.1.0`.
+  - Usar Spectral (`@stoplight/spectral-cli`) con `spectral:oas` para validar el contrato.
+  - Exponerlo como `pnpm check:api` e integrarlo en `pnpm check`. Solo los errores bloquean; los warnings se muestran sin fallar.
+- **7.2 — Generación de tipos compartidos (pendiente)**
+  - Generar los tipos desde la especificación; evaluar `openapi-typescript` u Orval según las necesidades de consumo.
+  - Versionar la salida generada en `packages/commons`.
+- **7.3 — Consistencia de tipos generados (pendiente)**
+  - Añadir una comprobación que falle si el resultado generado no coincide con el código versionado.
+- **7.4 — Cambios incompatibles en CI (pendiente)**
+  - Usar oasdiff para detectar cambios incompatibles comparando con la versión base apropiada.
+  - Integrarlo cuando exista CI; oasdiff se distribuye como binario/imagen y no como paquete npm.
 
 ### Fase 8 — Análisis específico del frontend
 
