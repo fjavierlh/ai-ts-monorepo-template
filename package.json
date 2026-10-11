@@ -8,7 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint .",
     "typecheck": "pnpm -r run typecheck",
-    "check": "pnpm lint && pnpm typecheck",
+    "check": "pnpm lint && pnpm typecheck && pnpm depcruise",
+    "depcruise": "depcruise --config .dependency-cruiser.mjs apps packages",
     "prepare": "husky"
   },
   "keywords": [],
@@ -29,6 +30,7 @@
   "devDependencies": {
     "@commitlint/cli": "^21.2.3",
     "@commitlint/config-conventional": "^21.2.3",
+    "dependency-cruiser": "^18.5.0",
     "eslint": "^10.12.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-sonarjs": "^4.2.2",
