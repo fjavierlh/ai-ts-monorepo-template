@@ -25,3 +25,34 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
+
+  api-breaking-changes:
+    name: api-breaking-changes
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch pull request base
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: git fetch --no-tags --depth=1 origin "$BASE_SHA"
+      - name: Check base OpenAPI spec
+        id: base-spec
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if git cat-file -e "$BASE_SHA:packages/commons/openapi.yaml" 2>/dev/null; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Se omite la comprobación de cambios incompatibles: el commit base no contiene packages/commons/openapi.yaml"
+          fi
+      - if: steps.base-spec.outputs.exists == 'true'
+        uses: oasdiff/oasdiff-action/breaking@b9325c9e0a27ab65b0da3b766522cedec6be81dc # v0.1.18
+        env:
+          OASDIFF_INTERNAL: "1"
+        with:
+          base: ${{ github.event.pull_request.base.sha }}:packages/commons/openapi.yaml
+          revision: HEAD:packages/commons/openapi.yaml
+          fail-on: ERR
+          review: false

@@ -77,9 +77,10 @@ El alcance exacto de cada hook se decidirá al implementar las fases, midiendo e
 - **7.3 — Consistencia de tipos generados (completado)**
   - Añadir una comprobación que falle si el resultado generado no coincide con el código versionado.
   - Exponerla como `pnpm check:api:generated` e integrarla en `pnpm check` sin modificar archivos.
-- **7.4 — Cambios incompatibles en CI (pendiente)**
-  - Usar oasdiff para detectar cambios incompatibles comparando con la versión base apropiada.
-  - Integrarlo cuando exista CI; oasdiff se distribuye como binario/imagen y no como paquete npm.
+- **7.4 — Cambios incompatibles en CI (completado)**
+  - Usar oasdiff para detectar cambios incompatibles comparando con el SHA base del pull request; omitir la comparación con un aviso si el spec aún no existe en la base.
+  - Bloquear cambios de nivel `ERR` y mostrar los de nivel `WARN` sin bloquear.
+  - Desactivar la publicación del diff en el servicio externo (`review: false`); oasdiff se distribuye como binario/imagen y no como paquete npm.
 
 ### Fase 8 — Análisis específico del frontend
 
