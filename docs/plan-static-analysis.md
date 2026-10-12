@@ -103,7 +103,9 @@ Tras elegir React y, en su caso, un metaframework:
 
 ### Fase 11 — SonarCloud opcional
 
-- Documentar y preparar la integración con SonarCloud y cobertura como job opt-in, sin requerir credenciales ni servicio en el uso básico del template.
+- **Integración CI opt-in (completada):** añadir un workflow separado para SonarCloud, desactivado por defecto y fuera de `pnpm check` y los hooks; omitirlo en pull requests desde forks.
+- Derivar organización y clave del proyecto del repositorio GitHub, permitiendo overrides por variables; documentar la configuración y que los secretos/variables no se heredan al crear un repositorio desde el template.
+- **Cobertura (pendiente):** conectar un informe LCOV cuando se incorpore un runner de tests; hasta entonces, no se informa cobertura.
 
 ### Fase 12 — Análisis opcional de supply chain e IaC
 
