@@ -1,0 +1,14 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+# Transitive dependency of @stoplight/spectral-cli; its postinstall sends
+# installation analytics and is not needed to run Spectral.
+allowBuilds:
+  "@scarf/scarf": false
+
+# openapi-typescript declara typescript ^5.x como peer, pero se ha validado
+# su funcionamiento con TypeScript 6.x en este repositorio.
+peerDependencyRules:
+  allowedVersions:
+    "openapi-typescript>typescript": "6"

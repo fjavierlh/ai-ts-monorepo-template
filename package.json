@@ -1,14 +1,32 @@
 {
   "name": "ai-ts-monorepo-template",
   "version": "1.0.0",
+  "private": true,
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "pnpm -r run test",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint .",
+    "typecheck": "pnpm -r run typecheck",
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm depcruise && pnpm check:unused && pnpm check:dependencies && pnpm check:api && pnpm check:api:generated",
+    "check:ci": "pnpm check",
+    "check:api": "spectral lint --fail-severity error packages/commons/openapi.yaml",
+    "check:api:generated": "openapi-typescript packages/commons/openapi.yaml --check -o packages/commons/src/generated/openapi.d.ts",
+    "generate:api": "openapi-typescript packages/commons/openapi.yaml -o packages/commons/src/generated/openapi.d.ts",
+    "check:audit": "sh scripts/check-audit.sh",
+    "check:report": "sh scripts/check-report.sh",
+    "check:dependencies": "syncpack lint",
+    "check:secrets": "sh scripts/check-secrets.sh",
+    "check:unused": "knip",
+    "depcruise": "depcruise --config .dependency-cruiser.mjs apps packages",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": "24.x"
+  },
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
@@ -17,5 +35,31 @@
     }
   },
   "packageManager": "pnpm@12.8.1",
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "@commitlint/cli": "^21.2.3",
+    "@commitlint/config-conventional": "^21.2.3",
+    "@stoplight/spectral-cli": "^6.17.0",
+    "@vitest/coverage-v8": "^5.0.3",
+    "dependency-cruiser": "^18.5.0",
+    "eslint": "^10.12.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-sonarjs": "^4.2.2",
+    "husky": "^9.1.7",
+    "knip": "^6.41.0",
+    "lint-staged": "^17.6.0",
+    "openapi-typescript": "^7.13.0",
+    "prettier": "^3.9.10",
+    "syncpack": "^15.3.3",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.71.1",
+    "vitest": "^5.0.3"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,jsonc,md,mdx,yaml,yml,css,scss,html}": "prettier --write"
+  }
 }

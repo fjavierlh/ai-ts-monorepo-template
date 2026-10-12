@@ -1,0 +1,29 @@
+openapi: 3.1.0
+info:
+  title: Commons API
+  version: 0.0.0
+  description: Shared API contract for the monorepo.
+paths:
+  /health:
+    get:
+      operationId: getHealth
+      summary: Check service health
+      description: Returns the health status of the service.
+      tags:
+        - Health
+      responses:
+        "200":
+          description: The service is healthy.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    const: ok
+                required:
+                  - status
+tags:
+  - name: Health
+    description: Service health checks.
