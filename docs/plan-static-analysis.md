@@ -98,8 +98,8 @@ Tras elegir React y, en su caso, un metaframework:
 ### Fase 10 — SAST con Semgrep en CI
 
 - **Ejecución inicial (completada):** ejecutar Semgrep Community Edition en un workflow de CI independiente con reglas genéricas para TypeScript/JavaScript y `security-audit`; desactivar métricas y publicar el reporte SARIF como artefacto.
+- **Integración con GitHub Code Scanning (completada, opt-in):** un job separado publica el SARIF cuando la variable de repositorio `SEMGREP_CODE_SCANNING=true` está configurada y Code Scanning está disponible; se omite en pull requests desde forks.
 - Los hallazgos son informativos y no bloquean CI inicialmente (opción A). Incorporar más adelante el modo estricto (`--error`, opción B) tras revisar el ruido de las reglas.
-- La integración de SARIF con GitHub Code Scanning queda pendiente y será opt-in, según disponibilidad de la plataforma y permisos del repositorio.
 
 ### Fase 11 — SonarCloud opcional
 
