@@ -107,7 +107,7 @@ Tras elegir React y, en su caso, un metaframework:
 
 ### Fase 12 — Análisis opcional de supply chain e IaC
 
-- Evaluar `osv-scanner` o `pnpm audit` para vulnerabilidades de dependencias.
+- **Vulnerabilidades de dependencias (completado):** añadir `pnpm check:audit`, comando opt-in que analiza `pnpm-lock.yaml` con OSV-Scanner mediante Docker. Si Docker no está disponible, avisa y omite el análisis; no se integra en `pnpm check` ni en los hooks.
 - Evaluar Trivy para dependencias, IaC, secretos o contenedores, según lo que incorpore el repositorio.
 - Evaluar CodeQL si la plataforma y el tipo de repositorio lo justifican.
 - Mantener estas integraciones opt-in cuando dependan de plataforma, credenciales o infraestructura.
