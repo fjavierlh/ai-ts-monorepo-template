@@ -74,8 +74,9 @@ El alcance exacto de cada hook se decidirá al implementar las fases, midiendo e
 - **7.2 — Generación de tipos compartidos (completado)**
   - Generar los tipos desde la especificación con `openapi-typescript` mediante `pnpm generate:api`.
   - Versionar la salida generada en `packages/commons/src/generated/openapi.d.ts` y exportarla desde `packages/commons/src/index.ts`.
-- **7.3 — Consistencia de tipos generados (pendiente)**
+- **7.3 — Consistencia de tipos generados (completado)**
   - Añadir una comprobación que falle si el resultado generado no coincide con el código versionado.
+  - Exponerla como `pnpm check:api:generated` e integrarla en `pnpm check` sin modificar archivos.
 - **7.4 — Cambios incompatibles en CI (pendiente)**
   - Usar oasdiff para detectar cambios incompatibles comparando con la versión base apropiada.
   - Integrarlo cuando exista CI; oasdiff se distribuye como binario/imagen y no como paquete npm.
