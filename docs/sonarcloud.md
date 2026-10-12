@@ -32,7 +32,15 @@ GitHub copia los archivos del template, incluido el workflow y `sonar-project.pr
 
 ## Cobertura
 
-El repositorio ya usa Vitest como runner de tests, pero todavía no genera informes LCOV. Por eso la propiedad `sonar.javascript.lcov.reportPaths` está comentada en `sonar-project.properties` y no se carga cobertura en SonarCloud. Cuando se configure la cobertura de Vitest, habrá que apuntar esa propiedad al informe LCOV que genere.
+Vitest genera un resumen de cobertura por workspace y un único informe LCOV con:
+
+```sh
+pnpm test:coverage
+```
+
+El informe se escribe en `coverage/lcov.info`, con rutas relativas a la raíz del repositorio para evitar colisiones entre workspaces. El comando es opt-in: no forma parte de `pnpm test`, `pnpm check` ni de los hooks. El directorio `coverage/` está ignorado por Git. La configuración de tests compartida se mantiene en `vitest.shared.ts`; la configuración de proyectos y cobertura, en `vitest.config.ts`.
+
+El workflow opt-in de SonarCloud instala las dependencias, ejecuta `pnpm test:coverage` y carga el informe usando `sonar.javascript.lcov.reportPaths` en `sonar-project.properties`. Los tests `*.test.ts` y `*.spec.ts` se excluyen de la métrica de cobertura mediante `sonar.coverage.exclusions`.
 
 ## Resolución de problemas
 

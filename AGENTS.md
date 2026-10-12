@@ -12,6 +12,8 @@
 
 - `pnpm lint`: ejecuta ESLint en el repositorio.
 - `pnpm test`: ejecuta los tests Vitest de cada workspace; también forma parte de `pnpm check`.
+- `pnpm test:coverage`: ejecuta la cobertura de todos los workspaces, con resumen por directorio e informe LCOV en `coverage/lcov.info`; no forma parte de `pnpm check`.
+- `vitest.shared.ts`: mantiene las opciones comunes de tests importadas por cada workspace; la config raíz `vitest.config.ts` agrega los proyectos y configura la cobertura.
 - `pnpm typecheck`: ejecuta el typecheck de todos los workspaces.
 - `pnpm depcruise`: comprueba ciclos, imports no resolubles y fronteras entre módulos.
 - `pnpm check:api`: valida `packages/commons/openapi.yaml` con Spectral; los errores bloquean y los warnings se muestran sin fallar.

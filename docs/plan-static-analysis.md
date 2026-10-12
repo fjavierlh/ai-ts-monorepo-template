@@ -107,7 +107,7 @@ Tras elegir React y, en su caso, un metaframework:
 - **Integración CI opt-in (completada):** añadir un workflow separado para SonarCloud, desactivado por defecto y fuera de `pnpm check` y los hooks; omitirlo en pull requests desde forks.
 - Derivar organización y clave del proyecto del repositorio GitHub, permitiendo overrides por variables; documentar la configuración y que los secretos/variables no se heredan al crear un repositorio desde el template.
 - **Runner de tests (completado):** adoptar Vitest en los workspaces; `pnpm test` lo ejecuta y `pnpm check` lo incluye.
-- **Cobertura (pendiente, siguiente paso):** conectar un informe LCOV generado por Vitest; hasta entonces, no se informa cobertura.
+- **Cobertura (completado):** añadir `pnpm test:coverage` optativo para generar un resumen de cobertura por workspace y un LCOV único con rutas relativas a la raíz; SonarCloud excluye los archivos de test de la cobertura.
 
 ### Fase 12 — Análisis opcional de supply chain e IaC
 
