@@ -11,6 +11,7 @@
 ## Comandos
 
 - `pnpm lint`: ejecuta ESLint en el repositorio.
+- `pnpm test`: ejecuta los tests Vitest de cada workspace; también forma parte de `pnpm check`.
 - `pnpm typecheck`: ejecuta el typecheck de todos los workspaces.
 - `pnpm depcruise`: comprueba ciclos, imports no resolubles y fronteras entre módulos.
 - `pnpm check:api`: valida `packages/commons/openapi.yaml` con Spectral; los errores bloquean y los warnings se muestran sin fallar.
@@ -19,7 +20,7 @@
 - `pnpm check:report`: ejecuta `pnpm check` y genera reportes JSON de ESLint, Knip y Spectral en `reports/` para consumo por herramientas; los reportes son auxiliares y no se versionan. El código de salida de `pnpm check` es el resultado definitivo; la generación de reportes es best-effort.
 - `pnpm check:ci`: ejecuta las comprobaciones bloqueantes del proyecto mediante `pnpm check`; es el punto de entrada usado por CI.
 - `pnpm check:audit`: analiza `pnpm-lock.yaml` con OSV-Scanner para detectar vulnerabilidades conocidas. Es optativo, requiere Docker y acceso a OSV.dev; si Docker no está disponible, muestra un aviso y omite el análisis. No forma parte de `pnpm check` ni de los hooks.
-- `pnpm check`: ejecuta lint, typecheck, dependency-cruiser, Knip, Syncpack y las comprobaciones del contrato OpenAPI; úsalo antes de finalizar cambios.
+- `pnpm check`: ejecuta lint, typecheck, tests, dependency-cruiser, Knip, Syncpack y las comprobaciones del contrato OpenAPI; úsalo antes de finalizar cambios.
 - CI ejecuta `pnpm check:ci` en pull requests y al hacer push a `main`; en pull requests también compara el contrato OpenAPI con su SHA base usando oasdiff, y omite esa comparación con un aviso si el spec aún no existe en la base. `pnpm check:secrets` sigue siendo un análisis local del hook de commit que requiere Docker.
 - El workflow `.github/workflows/semgrep.yml` publica el SARIF de Semgrep como artefacto. Para publicarlo también en GitHub Code Scanning, configura la variable de repositorio `SEMGREP_CODE_SCANNING` con el valor `true` en **Settings → Secrets and variables → Actions → Variables**. Requiere que Code Scanning esté disponible en el repositorio; se omite en pull requests desde forks. Los hallazgos son informativos y no bloquean CI.
 - SonarCloud es opt-in y no forma parte de `pnpm check` ni `pnpm check:ci`; requiere `SONARCLOUD_ENABLED=true` y el secreto `SONAR_TOKEN`. La organización y la clave de proyecto se derivan del repositorio por defecto. Consulta [docs/sonarcloud.md](docs/sonarcloud.md) para configurarlo; las variables y secretos no se copian al crear un repositorio desde este template.

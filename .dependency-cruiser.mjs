@@ -1,4 +1,17 @@
 export default {
+  options: {
+    doNotFollow: {
+      path: "node_modules",
+      dependencyTypes: [
+        "npm",
+        "npm-dev",
+        "npm-optional",
+        "npm-peer",
+        "npm-bundled",
+        "npm-no-pkg",
+      ],
+    },
+  },
   forbidden: [
     {
       name: "no-circular",

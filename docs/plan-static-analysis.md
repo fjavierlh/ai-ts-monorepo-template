@@ -11,6 +11,7 @@ Incorporar análisis estático que ayude a las personas y a los agentes a detect
 - Backend y frontend usarán TypeScript. El framework de backend y el framework/metaframework de frontend aún están por decidir.
 - Mantener TypeScript en `6.x` hasta que `typescript-eslint` sea compatible con la API de TypeScript 7; evaluar la actualización por separado.
 - Usar la versión soportada actual de ESLint (`10.x`); incorporar plugins específicos del frontend solo cuando declaren compatibilidad con la major adoptada.
+- Usar Vitest como runner de tests del monorepo; `pnpm test` los ejecuta y `pnpm check` los incluye. La cobertura LCOV se incorporará por separado.
 - `packages/commons` contendrá `openapi.yaml` y los tipos/DTOs compartidos. Se incluirán generación de tipos desde OpenAPI y una comprobación de que el código generado no está desactualizado.
 - Para las reglas de Sonar se usará `eslint-plugin-sonarjs` localmente; SonarCloud será opcional en CI.
 - Las herramientas se incorporarán de una en una en sesiones posteriores, no todas juntas.
@@ -105,7 +106,8 @@ Tras elegir React y, en su caso, un metaframework:
 
 - **Integración CI opt-in (completada):** añadir un workflow separado para SonarCloud, desactivado por defecto y fuera de `pnpm check` y los hooks; omitirlo en pull requests desde forks.
 - Derivar organización y clave del proyecto del repositorio GitHub, permitiendo overrides por variables; documentar la configuración y que los secretos/variables no se heredan al crear un repositorio desde el template.
-- **Cobertura (pendiente):** conectar un informe LCOV cuando se incorpore un runner de tests; hasta entonces, no se informa cobertura.
+- **Runner de tests (completado):** adoptar Vitest en los workspaces; `pnpm test` lo ejecuta y `pnpm check` lo incluye.
+- **Cobertura (pendiente, siguiente paso):** conectar un informe LCOV generado por Vitest; hasta entonces, no se informa cobertura.
 
 ### Fase 12 — Análisis opcional de supply chain e IaC
 

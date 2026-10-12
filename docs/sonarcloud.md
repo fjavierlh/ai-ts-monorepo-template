@@ -32,7 +32,7 @@ GitHub copia los archivos del template, incluido el workflow y `sonar-project.pr
 
 ## Cobertura
 
-El repositorio aún no tiene un runner de tests ni genera informes LCOV. Por eso la propiedad `sonar.javascript.lcov.reportPaths` está comentada en `sonar-project.properties` y no se carga cobertura en SonarCloud. Cuando se incorpore un runner, habrá que apuntar esa propiedad al informe que genere.
+El repositorio ya usa Vitest como runner de tests, pero todavía no genera informes LCOV. Por eso la propiedad `sonar.javascript.lcov.reportPaths` está comentada en `sonar-project.properties` y no se carga cobertura en SonarCloud. Cuando se configure la cobertura de Vitest, habrá que apuntar esa propiedad al informe LCOV que genere.
 
 ## Resolución de problemas
 

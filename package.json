@@ -4,10 +4,10 @@
   "private": true,
   "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "pnpm -r run test",
     "lint": "eslint .",
     "typecheck": "pnpm -r run typecheck",
-    "check": "pnpm lint && pnpm typecheck && pnpm depcruise && pnpm check:unused && pnpm check:dependencies && pnpm check:api && pnpm check:api:generated",
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm depcruise && pnpm check:unused && pnpm check:dependencies && pnpm check:api && pnpm check:api:generated",
     "check:ci": "pnpm check",
     "check:api": "spectral lint --fail-severity error packages/commons/openapi.yaml",
     "check:api:generated": "openapi-typescript packages/commons/openapi.yaml --check -o packages/commons/src/generated/openapi.d.ts",
@@ -50,7 +50,8 @@
     "prettier": "^3.9.10",
     "syncpack": "^15.3.3",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.71.1"
+    "typescript-eslint": "^8.71.1",
+    "vitest": "^5.0.3"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}": [
