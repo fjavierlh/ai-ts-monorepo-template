@@ -71,9 +71,9 @@ El alcance exacto de cada hook se decidirá al implementar las fases, midiendo e
   - Añadir `packages/commons/openapi.yaml` con OpenAPI `3.1.0`.
   - Usar Spectral (`@stoplight/spectral-cli`) con `spectral:oas` para validar el contrato.
   - Exponerlo como `pnpm check:api` e integrarlo en `pnpm check`. Solo los errores bloquean; los warnings se muestran sin fallar.
-- **7.2 — Generación de tipos compartidos (pendiente)**
-  - Generar los tipos desde la especificación; evaluar `openapi-typescript` u Orval según las necesidades de consumo.
-  - Versionar la salida generada en `packages/commons`.
+- **7.2 — Generación de tipos compartidos (completado)**
+  - Generar los tipos desde la especificación con `openapi-typescript` mediante `pnpm generate:api`.
+  - Versionar la salida generada en `packages/commons/src/generated/openapi.d.ts` y exportarla desde `packages/commons/src/index.ts`.
 - **7.3 — Consistencia de tipos generados (pendiente)**
   - Añadir una comprobación que falle si el resultado generado no coincide con el código versionado.
 - **7.4 — Cambios incompatibles en CI (pendiente)**

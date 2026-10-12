@@ -14,6 +14,7 @@
 - `pnpm typecheck`: ejecuta el typecheck de todos los workspaces.
 - `pnpm depcruise`: comprueba ciclos, imports no resolubles y fronteras entre módulos.
 - `pnpm check:api`: valida `packages/commons/openapi.yaml` con Spectral; los errores bloquean y los warnings se muestran sin fallar.
+- `pnpm generate:api`: genera los tipos TypeScript desde `packages/commons/openapi.yaml` en `packages/commons/src/generated`; regenera después de cambiar el contrato.
 - `pnpm check`: ejecuta lint, typecheck, dependency-cruiser, Knip, Syncpack y el lint del contrato OpenAPI; úsalo antes de finalizar cambios.
 - `pnpm check:secrets`: analiza los cambios staged con Gitleaks en la imagen oficial de Docker; requiere Docker y omite el análisis con un aviso si Docker no está disponible. Se ejecuta automáticamente en `pre-commit` y puede omitirse con `git commit --no-verify`.
 - `pnpm --filter <workspace> typecheck`: limita el typecheck a un workspace, por ejemplo `pnpm --filter @repo/backend typecheck`.
