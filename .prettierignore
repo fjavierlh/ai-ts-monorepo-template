@@ -1,2 +1,3 @@
 pnpm-lock.yaml
 packages/commons/src/generated
+reports/

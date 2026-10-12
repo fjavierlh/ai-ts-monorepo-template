@@ -118,8 +118,9 @@ Tras elegir React y, en su caso, un metaframework:
 
 - **Entrada inicial para CI (completada):** añadir `pnpm check:ci` como punto de entrada estable para las comprobaciones bloqueantes del proyecto; por ahora delega en `pnpm check`. Semgrep, oasdiff y los análisis opt-in permanecen separados.
 - Consolidar comandos como `pnpm check` para feedback local rápido y ampliar `pnpm check:ci` con análisis adicionales cuando corresponda.
-- Mantener códigos de salida correctos y reportes en formatos legibles por herramientas (JSON/SARIF cuando estén disponibles).
-- Documentar en `AGENTS.md` qué comando ejecutar y cómo interpretar los hallazgos.
+- **Reportes legibles por máquinas (completado, local opt-in):** `pnpm check:report` ejecuta `pnpm check` y genera reportes JSON de ESLint, Knip y Spectral en `reports/`, directorio ignorado por Git. Los reportes son best-effort; el código de salida sigue siendo el de `pnpm check`.
+- Mantener códigos de salida correctos; añadir formatos JSON/SARIF para otras herramientas cuando estén disponibles.
+- **Documentación para agentes (completado):** documentar en `AGENTS.md` qué comando ejecutar y cómo interpretar los reportes y el código de salida.
 - Considerar un resumen JSON estable y un servidor MCP solo si el uso real demuestra que aportan valor.
 
 ### Fase 14 — Herramientas opcionales de mayor coste

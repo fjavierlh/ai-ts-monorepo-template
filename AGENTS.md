@@ -16,6 +16,7 @@
 - `pnpm check:api`: valida `packages/commons/openapi.yaml` con Spectral; los errores bloquean y los warnings se muestran sin fallar.
 - `pnpm check:api:generated`: falla si los tipos OpenAPI versionados no coinciden con el contrato actual, sin modificar archivos.
 - `pnpm generate:api`: genera los tipos TypeScript desde `packages/commons/openapi.yaml` en `packages/commons/src/generated`; regenera después de cambiar el contrato.
+- `pnpm check:report`: ejecuta `pnpm check` y genera reportes JSON de ESLint, Knip y Spectral en `reports/` para consumo por herramientas; los reportes son auxiliares y no se versionan. El código de salida de `pnpm check` es el resultado definitivo; la generación de reportes es best-effort.
 - `pnpm check:ci`: ejecuta las comprobaciones bloqueantes del proyecto mediante `pnpm check`; es el punto de entrada usado por CI.
 - `pnpm check:audit`: analiza `pnpm-lock.yaml` con OSV-Scanner para detectar vulnerabilidades conocidas. Es optativo, requiere Docker y acceso a OSV.dev; si Docker no está disponible, muestra un aviso y omite el análisis. No forma parte de `pnpm check` ni de los hooks.
 - `pnpm check`: ejecuta lint, typecheck, dependency-cruiser, Knip, Syncpack y las comprobaciones del contrato OpenAPI; úsalo antes de finalizar cambios.
@@ -25,6 +26,12 @@
 - `pnpm check:secrets`: analiza los cambios staged con Gitleaks en la imagen oficial de Docker; requiere Docker y omite el análisis con un aviso si Docker no está disponible. Se ejecuta automáticamente en `pre-commit` y puede omitirse con `git commit --no-verify`.
 - `pnpm --filter <workspace> typecheck`: limita el typecheck a un workspace, por ejemplo `pnpm --filter @repo/backend typecheck`.
 - `pnpm exec lint-staged`: aplica las tareas configuradas a los archivos staged.
+
+### Interpretación de reportes
+
+- Usa el resultado y la salida de `pnpm check` como fuente de verdad; la existencia o el contenido de un reporte no cambia su código de salida y un reporte puede estar incompleto si falla su generador.
+- `reports/eslint.json` contiene problemas de lint; `reports/knip.json`, archivos, exports o dependencias sin uso; `reports/spectral.json`, hallazgos sobre el contrato OpenAPI. En Spectral, los errores bloquean `pnpm check` y los warnings son informativos.
+- Los reportes sirven como detalle legible por herramientas para investigar los hallazgos, no se versionan y se regeneran con `pnpm check:report`.
 
 Usa la versión de Node indicada en `package.json` y el gestor de paquetes fijado en `packageManager` (`pnpm`).
 

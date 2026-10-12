@@ -13,6 +13,7 @@
     "check:api:generated": "openapi-typescript packages/commons/openapi.yaml --check -o packages/commons/src/generated/openapi.d.ts",
     "generate:api": "openapi-typescript packages/commons/openapi.yaml -o packages/commons/src/generated/openapi.d.ts",
     "check:audit": "sh scripts/check-audit.sh",
+    "check:report": "sh scripts/check-report.sh",
     "check:dependencies": "syncpack lint",
     "check:secrets": "sh scripts/check-secrets.sh",
     "check:unused": "knip",
